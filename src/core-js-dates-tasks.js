@@ -165,8 +165,25 @@ function isDateInPeriod(date, period) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const formattedDate = new Date(date);
+  const month = formattedDate.getUTCMonth() + 1;
+  const day = formattedDate.getUTCDate();
+  const year = formattedDate.getUTCFullYear();
+  let hours = formattedDate.getUTCHours();
+  let ampm;
+  if (hours >= 12) {
+    ampm = 'PM';
+  } else {
+    ampm = 'AM';
+  }
+  hours %= 12;
+  if (hours === 0) {
+    hours = 12;
+  }
+  const minutes = formattedDate.getUTCMinutes().toString().padStart(2, '0');
+  const seconds = formattedDate.getUTCSeconds().toString().padStart(2, '0');
+  return `${month}/${day}/${year}, ${hours}:${minutes}:${seconds} ${ampm}`;
 }
 
 /**
@@ -228,8 +245,14 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const d = new Date(date);
+  const month = d.getMonth();
+  if (month >= 0 && month <= 2) return 1;
+  if (month >= 3 && month <= 5) return 2;
+  if (month >= 6 && month <= 8) return 3;
+  if (month >= 9 && month <= 11) return 4;
+  return 0;
 }
 
 /**
@@ -266,8 +289,9 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
 module.exports = {
